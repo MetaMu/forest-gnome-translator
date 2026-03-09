@@ -1,129 +1,744 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<title>Forest Gnome Covenant Scroll Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forest Gnome Language Spell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Uncial+Antiqua&family=EB+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
 
-<style>
+  <style>
+    :root{
+      --bg-deep:#0d120d;
+      --bg-mid:#162118;
+      --wood-1:#4d321d;
+      --wood-2:#6b4728;
+      --wood-3:#2d1c10;
+      --gold:#d2b16d;
+      --ink:#f4ead7;
+      --ink-dim:#d6c4a2;
+      --vine:#45633b;
+    }
 
-body{
-background:#bfa56a;
-font-family:Georgia,serif;
-margin:0;
-padding:40px;
-}
+    *{box-sizing:border-box}
 
-h1{
-text-align:center;
-margin-bottom:10px;
-}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:"EB Garamond", serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(90,130,80,.08) 0 120px, transparent 140px),
+        radial-gradient(circle at 82% 30%, rgba(120,90,150,.07) 0 90px, transparent 120px),
+        linear-gradient(180deg, rgba(8,10,8,.65), rgba(8,10,8,.8)),
+        linear-gradient(180deg, var(--bg-mid), var(--bg-deep));
+      min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
+    }
 
-.controls{
-max-width:500px;
-margin:auto;
-margin-bottom:30px;
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255,255,255,.12) 0 2px, transparent 3px),
+        radial-gradient(circle at 22% 70%, rgba(255,255,255,.08) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.1) 0 2px, transparent 3px),
+        radial-gradient(circle at 92% 78%, rgba(255,255,255,.08) 0 2px, transparent 3px);
+      opacity:.5;
+    }
 
-textarea{
-width:100%;
-height:120px;
-font-size:18px;
-padding:10px;
-border-radius:10px;
-border:1px solid #8c6a35;
-}
+    .page{
+      position:relative;
+      z-index:1;
+      max-width:1280px;
+      margin:0 auto;
+      padding:28px 18px 50px;
+    }
 
-button{
-margin-top:10px;
-padding:10px 14px;
-font-size:16px;
-border:none;
-border-radius:8px;
-background:#4b5f3c;
-color:white;
-cursor:pointer;
-}
+    .top-stack{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      margin-bottom:24px;
+    }
 
-.scroll{
-margin:auto;
-max-width:800px;
-padding:80px 60px;
-background:#f4e5b9;
-border-radius:20px;
-box-shadow:
-inset 0 0 40px rgba(0,0,0,.2),
-0 20px 40px rgba(0,0,0,.4);
-}
+    .wood-sign{
+      position:relative;
+      width:min(1100px, 100%);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), transparent 35%),
+        linear-gradient(180deg, var(--wood-2), var(--wood-1) 55%, var(--wood-3));
+      border:3px solid rgba(25,14,8,.8);
+      border-radius:22px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        inset 0 0 0 2px rgba(210,177,109,.13),
+        0 18px 30px rgba(0,0,0,.35);
+      overflow:hidden;
+      padding:26px 28px;
+    }
 
-.output{
-text-align:center;
-font-size:42px;
-line-height:1.6;
-letter-spacing:4px;
-}
+    .wood-sign::after{
+      content:"✧ ᚨ ✧ ᚾ ✧ ᚱ ✧";
+      position:absolute;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      letter-spacing:.4em;
+      font-size:.85rem;
+      color:rgba(210,177,109,.5);
+      white-space:nowrap;
+    }
 
-.subtitle{
-text-align:center;
-margin-top:20px;
-font-size:14px;
-letter-spacing:2px;
-}
+    .vines{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
 
-</style>
+    .vine-left,
+    .vine-right{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:140px;
+      opacity:.88;
+    }
+
+    .vine-left{
+      left:0;
+      background:
+        radial-gradient(circle at 28px 30px, #597d4b 0 8px, transparent 9px),
+        radial-gradient(circle at 40px 78px, #6f925f 0 8px, transparent 9px),
+        linear-gradient(120deg, transparent 0 38%, rgba(54,82,48,.9) 39% 42%, transparent 43%);
+      background-repeat:no-repeat;
+    }
+
+    .vine-right{
+      right:0;
+      background:
+        radial-gradient(circle at 104px 36px, #597d4b 0 8px, transparent 9px),
+        radial-gradient(circle at 90px 90px, #6f925f 0 8px, transparent 9px),
+        linear-gradient(245deg, transparent 0 38%, rgba(54,82,48,.9) 39% 42%, transparent 43%);
+      background-repeat:no-repeat;
+    }
+
+    .mushrooms{
+      position:absolute;
+      bottom:8px;
+      left:18px;
+      font-size:1.2rem;
+      opacity:.82;
+      letter-spacing:.3em;
+    }
+
+    .mushrooms.right{
+      left:auto;
+      right:18px;
+    }
+
+    .main-title{
+      text-align:center;
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(2rem, 4vw, 4rem);
+      line-height:1.05;
+      letter-spacing:.08em;
+      color:#f1e1bc;
+      text-transform:uppercase;
+      text-shadow:
+        0 1px 0 #2b1708,
+        0 2px 0 #2b1708,
+        0 0 18px rgba(210,177,109,.14);
+    }
+
+    .sub-credit{
+      text-align:center;
+      margin-top:10px;
+      font-family:"Uncial Antiqua", serif;
+      font-size:clamp(.9rem, 1.6vw, 1.2rem);
+      color:var(--ink-dim);
+      letter-spacing:.08em;
+    }
+
+    .welcome-line{
+      text-align:center;
+      margin:0;
+      font-family:"Uncial Antiqua", serif;
+      font-size:clamp(1rem, 2vw, 1.45rem);
+      line-height:1.35;
+      color:#ecd7a5;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:24px;
+      align-items:start;
+      margin-top:26px;
+    }
+
+    @media (max-width: 980px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .panel{
+      background:rgba(21,28,20,.88);
+      border:1px solid rgba(210,177,109,.2);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 18px 30px rgba(0,0,0,.28);
+    }
+
+    .panel-title{
+      margin:0 0 12px;
+      font-family:"Cinzel", serif;
+      font-size:1.2rem;
+      color:#f0ddb1;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .small-note{
+      color:#ccb891;
+      font-size:.98rem;
+      line-height:1.45;
+      margin-bottom:14px;
+    }
+
+    .mode-toggle{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .mode-btn{
+      border:1px solid rgba(210,177,109,.28);
+      background:linear-gradient(180deg, rgba(84,50,25,.95), rgba(48,28,15,.95));
+      color:#f1e2c0;
+      padding:12px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      font-family:"Cinzel", serif;
+      font-size:.92rem;
+    }
+
+    .mode-btn.active{
+      background:linear-gradient(180deg, #7d5b2d, #533818);
+      box-shadow:0 0 0 1px rgba(210,177,109,.25), 0 0 20px rgba(154,203,121,.12);
+    }
+
+    label{
+      display:block;
+      margin:12px 0 8px;
+      font-weight:700;
+      color:#ead8b2;
+    }
+
+    textarea{
+      width:100%;
+      min-height:170px;
+      resize:vertical;
+      border-radius:16px;
+      border:1px solid rgba(210,177,109,.24);
+      background:rgba(8,11,8,.72);
+      color:#f5eedf;
+      padding:14px 16px;
+      font-size:1rem;
+      font-family:"EB Garamond", serif;
+      line-height:1.45;
+    }
+
+    textarea::placeholder{
+      color:#bca986;
+    }
+
+    .controls-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .spell-btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:11px 15px;
+      color:#fff9ec;
+      font-family:"Cinzel", serif;
+      font-weight:700;
+      background:linear-gradient(180deg, #5b7b4d, #33462b);
+      box-shadow:0 8px 16px rgba(0,0,0,.22);
+    }
+
+    .spell-btn.alt{
+      background:linear-gradient(180deg, #8a6637, #5d3f20);
+    }
+
+    .spell-btn.warn{
+      background:linear-gradient(180deg, #7c4a33, #50271a);
+    }
+
+    .spell-btn.ghost{
+      background:linear-gradient(180deg, #4f534c, #30352f);
+    }
+
+    .scroll-wrap{
+      position:relative;
+      min-height:840px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    .scroll{
+      width:min(100%, 860px);
+      min-height:820px;
+      position:relative;
+      overflow:hidden;
+      border-radius:24px;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(255,255,255,.22), transparent 20%),
+        radial-gradient(circle at 84% 24%, rgba(255,255,255,.12), transparent 18%),
+        linear-gradient(180deg, #efe0b7 0%, #e7d19a 26%, #dec388 52%, #d1b171 78%, #c69f5f 100%);
+      border:2px solid rgba(70,42,20,.58);
+      box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.08),
+        inset 0 0 40px rgba(90,58,25,.18),
+        0 20px 40px rgba(0,0,0,.34);
+      padding:70px 54px 88px;
+    }
+
+    .scroll::before,
+    .scroll::after{
+      content:"";
+      position:absolute;
+      left:16px;
+      right:16px;
+      height:18px;
+      border-radius:999px;
+      background:linear-gradient(180deg, #896236, #613f20 55%, #3f2814);
+      z-index:2;
+    }
+
+    .scroll::before{top:12px}
+    .scroll::after{bottom:12px}
+
+    .scroll-title{
+      position:relative;
+      z-index:3;
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .scroll-title h2{
+      margin:0;
+      font-family:"Cinzel", serif;
+      color:#3b2412;
+      font-size:clamp(1.6rem, 3vw, 2.6rem);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .scroll-title .ornament{
+      margin-top:8px;
+      color:#7c5a2f;
+      letter-spacing:.3em;
+      font-size:.95rem;
+    }
+
+    .translation-area{
+      position:relative;
+      z-index:3;
+      max-width:680px;
+      margin:0 auto;
+      min-height:380px;
+      padding:28px 10px 32px;
+      border-top:2px solid rgba(104,73,38,.25);
+      border-bottom:2px solid rgba(104,73,38,.25);
+    }
+
+    .translation-line{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px 10px;
+      margin:16px 0;
+      min-height:40px;
+      color:#5a381b;
+      font-size:1.45rem;
+      line-height:1.75;
+      text-align:center;
+    }
+
+    .token{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:34px;
+      padding:2px 2px;
+      font-weight:700;
+    }
+
+    .space{
+      width:18px;
+      display:inline-block;
+    }
+
+    .human-line{
+      position:relative;
+      z-index:3;
+      text-align:center;
+      margin-top:22px;
+      border-top:1px solid rgba(104,73,38,.28);
+      padding-top:16px;
+      color:#5d4425;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-family:"Cinzel", serif;
+      font-size:.95rem;
+    }
+
+    .human-line strong{
+      display:block;
+      font-size:.74rem;
+      letter-spacing:.22em;
+      margin-bottom:8px;
+      color:#7d5f35;
+    }
+
+    .copy-box{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(210,177,109,.16);
+      border-radius:18px;
+      padding:16px;
+      margin-top:18px;
+    }
+
+    .copy-box h3{
+      margin:0 0 10px;
+      font-family:"Cinzel", serif;
+      color:#ead8b2;
+      font-size:1rem;
+      text-transform:uppercase;
+    }
+
+    .code-output{
+      min-height:100px;
+      background:rgba(8,10,8,.52);
+      border:1px solid rgba(210,177,109,.14);
+      border-radius:14px;
+      padding:12px 14px;
+      color:#f2ead8;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-size:1rem;
+      line-height:1.45;
+    }
+
+    @media (max-width:700px){
+      .scroll{padding:64px 24px 74px}
+      .translation-line{font-size:1.15rem}
+    }
+  </style>
 </head>
-
-
 <body>
+  <div class="page">
+    <section class="top-stack">
+      <div class="wood-sign">
+        <div class="vines">
+          <div class="vine-left"></div>
+          <div class="vine-right"></div>
+          <div class="mushrooms">🍄 🍂 ✧</div>
+          <div class="mushrooms right">✧ 🌿 🍄</div>
+        </div>
+        <h1 class="main-title">Forest Gnome Language Spell</h1>
+        <div class="sub-credit">Inspired by Nibbles By FrankyTheFrog</div>
+      </div>
 
-<h1>Forest Gnome Covenant Scroll Generator</h1>
+      <div class="wood-sign" style="max-width:820px;">
+        <div class="vines">
+          <div class="vine-left"></div>
+          <div class="vine-right"></div>
+          <div class="mushrooms">🍄 ✧ 🌿</div>
+          <div class="mushrooms right">ᚱ ✧ ᚨ</div>
+        </div>
+        <p class="welcome-line">Welcome to FGC formed through the Donzy Pact</p>
+      </div>
+    </section>
 
-<div class="controls">
+    <section class="layout">
+      <aside class="panel">
+        <h2 class="panel-title">Spell Controls</h2>
+        <div class="small-note">
+          Two-way translator with dark fantasy styling. Replace the placeholder glyph tokens later with your exact final symbols.
+        </div>
 
-<textarea id="textInput"
-placeholder="Type your message..."></textarea>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeEnglishToGnommish" type="button">English → Gnommish</button>
+          <button class="mode-btn" id="modeGnommishToEnglish" type="button">Gnommish → English</button>
+        </div>
 
-<button onclick="renderScroll()">
-Generate Scroll
-</button>
+        <label for="inputText">Input</label>
+        <textarea id="inputText" placeholder="Type your message here...
 
-</div>
+Examples:
+Welcome to the Forest Gnome Covenant.
+The roots remember."></textarea>
 
+        <div class="controls-row">
+          <button class="spell-btn" id="translateBtn" type="button">Cast Translation</button>
+          <button class="spell-btn alt" id="swapBtn" type="button">Swap Modes</button>
+          <button class="spell-btn ghost" id="demoBtn" type="button">Load Demo</button>
+          <button class="spell-btn warn" id="clearBtn" type="button">Clear</button>
+        </div>
+      </aside>
 
-<div class="scroll">
+      <main>
+        <div class="scroll-wrap">
+          <div class="scroll">
+            <div class="scroll-title">
+              <h2>Ancient Translation Scroll</h2>
+              <div class="ornament">❦ ✧ ❈ ✧ ❦</div>
+            </div>
 
-<div id="gnommishOutput" class="output"></div>
+            <div class="translation-area" id="translationArea"></div>
 
-<div class="subtitle">
-Human Tongue Translation
-<br>
-<span id="englishOutput"></span>
-</div>
+            <div class="human-line">
+              <strong>Human Tongue</strong>
+              <span id="humanEcho"></span>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <div class="copy-box">
+          <h3>Copyable Text Output</h3>
+          <div class="code-output" id="copyableOutput"></div>
+        </div>
+      </main>
+    </section>
+  </div>
 
+  <script>
+    const GLYPHS = {
+      a: "{A}", b: "{B}", c: "{C}", d: "{D}", e: "{E}", f: "{F}",
+      g: "{G}", h: "{H}", i: "{I}", j: "{J}", k: "{K}", l: "{L}",
+      m: "{M}", n: "{N}", o: "{O}", p: "{P}", q: "{Q}", r: "{R}",
+      s: "{S}", t: "{T}", u: "{U}", v: "{V}", w: "{W}", x: "{X}",
+      y: "{Y}", z: "{Z}", "_": "{_}", ".": "{.}"
+    };
 
-<script>
+    const REVERSE_GLYPHS = {};
+    for (const [latin, glyph] of Object.entries(GLYPHS)) {
+      REVERSE_GLYPHS[glyph] = latin;
+    }
 
-function renderScroll(){
+    const inputText = document.getElementById("inputText");
+    const translationArea = document.getElementById("translationArea");
+    const humanEcho = document.getElementById("humanEcho");
+    const copyableOutput = document.getElementById("copyableOutput");
 
-const input =
-document.getElementById("textInput").value
+    const modeEnglishToGnommishBtn = document.getElementById("modeEnglishToGnommish");
+    const modeGnommishToEnglishBtn = document.getElementById("modeGnommishToEnglish");
 
-const output =
-document.getElementById("gnommishOutput")
+    const translateBtn = document.getElementById("translateBtn");
+    const swapBtn = document.getElementById("swapBtn");
+    const demoBtn = document.getElementById("demoBtn");
+    const clearBtn = document.getElementById("clearBtn");
 
-const english =
-document.getElementById("englishOutput")
+    let mode = "english-to-gnommish";
 
-output.innerText = input.toUpperCase()
+    function setMode(nextMode){
+      mode = nextMode;
+      modeEnglishToGnommishBtn.classList.toggle("active", mode === "english-to-gnommish");
+      modeGnommishToEnglishBtn.classList.toggle("active", mode === "gnommish-to-english");
 
-english.innerText = input
+      if(mode === "english-to-gnommish"){
+        inputText.placeholder = "Type English here...\\n\\nExample:\\nWelcome to the Forest Gnome Covenant.";
+      } else {
+        inputText.placeholder = "Paste your Gnommish symbols here...\\n\\nExample:\\n{W}{E}{L}{C}{O}{M}{E}";
+      }
 
-}
+      translate();
+    }
 
-</script>
+    function translateEnglishToGnommish(text){
+      let output = "";
+      for(const ch of text){
+        const lower = ch.toLowerCase();
+        if(lower === " "){
+          output += " ";
+        } else if(lower === "\\n"){
+          output += "\\n";
+        } else if(GLYPHS[lower]){
+          output += GLYPHS[lower];
+        } else {
+          output += ch;
+        }
+      }
+      return output;
+    }
 
+    function translateGnommishToEnglish(text){
+      const glyphEntries = Object.entries(REVERSE_GLYPHS).sort((a,b) => b[0].length - a[0].length);
+      let i = 0;
+      let output = "";
 
+      while(i < text.length){
+        const currentChar = text[i];
+
+        if(currentChar === " "){
+          output += " ";
+          i++;
+          continue;
+        }
+
+        if(currentChar === "\\n"){
+          output += "\\n";
+          i++;
+          continue;
+        }
+
+        let matched = false;
+
+        for(const [glyphValue, latin] of glyphEntries){
+          if(text.slice(i, i + glyphValue.length) === glyphValue){
+            output += latin;
+            i += glyphValue.length;
+            matched = true;
+            break;
+          }
+        }
+
+        if(!matched){
+          output += text[i];
+          i++;
+        }
+      }
+
+      return output;
+    }
+
+    function tokenizeGlyphOutput(line){
+      const tokens = [];
+      let i = 0;
+
+      while(i < line.length){
+        if(line[i] === " "){
+          tokens.push(" ");
+          i++;
+          continue;
+        }
+
+        if(line[i] === "{"){
+          const close = line.indexOf("}", i);
+          if(close !== -1){
+            tokens.push(line.slice(i, close + 1));
+            i = close + 1;
+            continue;
+          }
+        }
+
+        tokens.push(line[i]);
+        i++;
+      }
+
+      return tokens;
+    }
+
+    function renderScrollLines(text){
+      translationArea.innerHTML = "";
+      const lines = text.split("\\n");
+
+      lines.forEach(line => {
+        const row = document.createElement("div");
+        row.className = "translation-line";
+
+        if(mode === "english-to-gnommish"){
+          const tokens = tokenizeGlyphOutput(line);
+          tokens.forEach(token => {
+            if(token === " "){
+              const space = document.createElement("span");
+              space.className = "space";
+              row.appendChild(space);
+            } else {
+              const span = document.createElement("span");
+              span.className = "token";
+              span.textContent = token;
+              row.appendChild(span);
+            }
+          });
+        } else {
+          for(const ch of line){
+            if(ch === " "){
+              const space = document.createElement("span");
+              space.className = "space";
+              row.appendChild(space);
+            } else {
+              const span = document.createElement("span");
+              span.className = "token";
+              span.textContent = ch.toUpperCase();
+              row.appendChild(span);
+            }
+          }
+        }
+
+        if(!line.length){
+          row.innerHTML = "&nbsp;";
+        }
+
+        translationArea.appendChild(row);
+      });
+    }
+
+    function translate(){
+      const raw = inputText.value || "";
+      let translated = "";
+
+      if(mode === "english-to-gnommish"){
+        translated = translateEnglishToGnommish(raw);
+        humanEcho.textContent = raw.replace(/\\n/g, " • ");
+      } else {
+        translated = translateGnommishToEnglish(raw);
+        humanEcho.textContent = translated.replace(/\\n/g, " • ");
+      }
+
+      renderScrollLines(translated);
+      copyableOutput.textContent = translated || "Your translation will appear here.";
+    }
+
+    function loadDemo(){
+      if(mode === "english-to-gnommish"){
+        inputText.value = "Welcome to FGC formed through the Donzy Pact.\\nThe roots remember.";
+      } else {
+        inputText.value = "{W}{E}{L}{C}{O}{M}{E}";
+      }
+      translate();
+    }
+
+    function clearAll(){
+      inputText.value = "";
+      translate();
+    }
+
+    modeEnglishToGnommishBtn.addEventListener("click", () => setMode("english-to-gnommish"));
+    modeGnommishToEnglishBtn.addEventListener("click", () => setMode("gnommish-to-english"));
+    translateBtn.addEventListener("click", translate);
+    swapBtn.addEventListener("click", () => {
+      setMode(mode === "english-to-gnommish" ? "gnommish-to-english" : "english-to-gnommish");
+    });
+    demoBtn.addEventListener("click", loadDemo);
+    clearBtn.addEventListener("click", clearAll);
+    inputText.addEventListener("input", translate);
+
+    translate();
+  </script>
 </body>
 </html>
